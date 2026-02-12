@@ -1,4 +1,4 @@
-# 🎯 Valorant Style Aim Trainer - Unity 3D
+# 🎯 Aim Trainer - Unity 3D
 
 Ek intense training ground jahan aap apni shooting accuracy improve kar sakte hain. Ismein bots spawn hote hain aur ek khatarnak "Berserk AI Enemy" hai jo player ka picha karta hai.
 
