@@ -3,13 +3,11 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float maxHealth = 50f;
+    public float maxHealth = 500f;
     private float currentHealth;
 
+    [Header("UI")]
     public Slider healthSlider;
-
-    private int hitCount = 0;  // For increasing damage
-    public bool isAngry = false;
 
     void Start()
     {
@@ -22,32 +20,18 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float baseDamage)
+    public void TakeDamage(float damage)
     {
-        hitCount++;
-
-        // Har hit pe +5 damage
-        float finalDamage = baseDamage + (hitCount * 5f);
-
-        currentHealth -= finalDamage;
-
-        isAngry = true;
-
-        Debug.Log("Damage Given: " + finalDamage);
-        Debug.Log("Enemy Health Now: " + currentHealth);
+        currentHealth -= damage;
 
         if (healthSlider != null)
-            healthSlider.value = currentHealth;
-
-        if (currentHealth <= 0)
         {
-            Die();
+            healthSlider.value = currentHealth;
         }
-    }
 
-    void Die()
-    {
-        Debug.Log("Enemy Destroyed!");
-        Destroy(gameObject);
+        if (currentHealth <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 }

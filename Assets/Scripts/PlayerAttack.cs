@@ -2,69 +2,30 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public float attackRange = 5000f;   // Increased long distance (can be overridden in Inspector)
-    public float baseDamage = 500f;
-
-    public Camera playerCamera;
-
-    void Start()
-    {
-        // Auto-assign main camera if none set in Inspector
-        if (playerCamera == null)
-        {
-            playerCamera = Camera.main;
-            Debug.Log("PlayerAttack: playerCamera was null, assigned Camera.main");
-        }
-
-        Debug.Log("PlayerAttack: attackRange = " + attackRange);
-    }
+    public float damage = 20f;
+    public float range = 100f;
+    public Camera fpsCam;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Fire1"))
         {
-            Attack();
+            Shoot();
         }
     }
 
-    void Attack()
+    void Shoot()
     {
-        if (playerCamera == null)
-        {
-            Debug.LogWarning("PlayerAttack: playerCamera is null, cannot raycast.");
-            return;
-        }
-
         RaycastHit hit;
 
-        // Ray visual debug (scene view) and log range
-        Debug.DrawRay(playerCamera.transform.position,
-                      playerCamera.transform.forward * attackRange,
-                      Color.red,
-                      1f);
-
-        if (Physics.Raycast(playerCamera.transform.position,
-                            playerCamera.transform.forward,
-                            out hit,
-                            attackRange))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            Debug.Log("Hit object: " + hit.transform.name + " at distance: " + hit.distance);
+            EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
 
-            // Important: check parent for EnemyHealth
-            EnemyHealth eh = hit.transform.GetComponentInParent<EnemyHealth>();
-
-            if (eh != null)
+            if (enemy != null)
             {
-                eh.TakeDamage(baseDamage);
+                enemy.TakeDamage(damage);
             }
-            else
-            {
-                Debug.Log("EnemyHealth NOT Found on hit object");
-            }
-        }
-        else
-        {
-            Debug.Log("No hit within range: " + attackRange);
         }
     }
 }
