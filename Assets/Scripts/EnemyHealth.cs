@@ -9,6 +9,10 @@ public class EnemyHealth : MonoBehaviour
     [Header("UI")]
     public Slider healthSlider;
 
+    [Header("Rage Damage Settings")]
+    public float minDamage = 5f;    // Full health pe damage
+    public float maxDamage = 50f;   // Low health pe max damage
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -33,5 +37,16 @@ public class EnemyHealth : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    // 🔥 Health kam → Damage zyada
+    public float GetCurrentDamage()
+    {
+        float healthPercent = currentHealth / maxHealth;
+
+        // Inverted scaling
+        float scaledDamage = Mathf.Lerp(maxDamage, minDamage, healthPercent);
+
+        return scaledDamage;
     }
 }

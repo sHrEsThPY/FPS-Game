@@ -5,11 +5,11 @@ public class EnemyChase : MonoBehaviour
 {
     public float speed = 6f;
     public float attackDistance = 3f;
-    public float damagePerSecond = 15f;
 
     private Transform player;
     private NavMeshAgent agent;
     private PlayerHealth playerHealth;
+    private EnemyHealth enemyHealth;
 
     void Start()
     {
@@ -23,11 +23,14 @@ public class EnemyChase : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
+
+        
+        enemyHealth = GetComponent<EnemyHealth>();
     }
 
     void Update()
     {
-        if (player == null || playerHealth == null)
+        if (player == null || playerHealth == null || enemyHealth == null)
             return;
 
         agent.SetDestination(player.position);
@@ -36,7 +39,9 @@ public class EnemyChase : MonoBehaviour
 
         if (distance <= attackDistance)
         {
-            playerHealth.TakeDamage(damagePerSecond * Time.deltaTime);
+            
+            float damage = enemyHealth.GetCurrentDamage();
+            playerHealth.TakeDamage(damage * Time.deltaTime);
         }
     }
 }
